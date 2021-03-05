@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pico_y_Placa_predictor.Controllers;
+using Pico_y_Placa_predictor.Models;
 
 namespace Pico_y_Placa_predictor.Tests.Controllers
 {
@@ -134,6 +136,42 @@ namespace Pico_y_Placa_predictor.Tests.Controllers
             validHour = controller.HourCheck("15 05");
             Assert.IsFalse(validHour);
         }
+
+        /// <summary>
+        /// Test to verify correct string return
+        /// </summary>
+        [TestMethod]
+        public void TestMobilityCheck_Valid()
+        {
+            var controller = new CirculacionController();
+            Vehiculo oVehiculo = new Vehiculo();
+            oVehiculo.placa = "PCE-9574";
+            oVehiculo.fecha = "05/02/2021";
+            oVehiculo.hora = "07:30";
+            oVehiculo.mensaje = "";
+
+            DateTime dateValue;
+            DateTime.TryParse(oVehiculo.fecha, out dateValue);
+            string dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+
+            oVehiculo.mensaje = controller.MobilityCheck(oVehiculo, dateValue);
+            
+            Assert.AreEqual("<li class='list-group-item'> TIENE LIBRE MOVILIDAD PARA ESTA FECHA " + dia.ToUpper() + " " + oVehiculo.fecha + " Y HORA " + oVehiculo.hora + "</li>", oVehiculo.mensaje);
+
+            oVehiculo.placa = "PCE-9574";
+            oVehiculo.fecha = "14/01/1997";
+            oVehiculo.hora = "16:30";
+            oVehiculo.mensaje = "";
+           
+            DateTime.TryParse(oVehiculo.fecha, out dateValue);
+            dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+
+            oVehiculo.mensaje = controller.MobilityCheck(oVehiculo, dateValue);
+            
+            Assert.AreEqual("<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + oVehiculo.fecha + " (07:00-9:30am / 16:00-19:30) </li>", oVehiculo.mensaje);
+        }
+
+       
 
     }
 }

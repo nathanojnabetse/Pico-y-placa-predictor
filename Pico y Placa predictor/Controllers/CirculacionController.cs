@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -16,10 +17,19 @@ namespace Pico_y_Placa_predictor.Controllers
             return View("Index");
         }
 
+        /// <summary>
+        /// Method to check invalid state from View 
+        /// </summary>
+        /// <param name="oVehiculo">Object type vehicule from view</param>
+        /// <returns>Message of error or success</returns>
         public string Comprobar(Vehiculo oVehiculo)
         {
-            string rpta = "";
-            rpta += "<ul class='list-group'>"; //List with errors
+            bool plateValid = false;
+            bool dateValid = false;
+            bool hourValid = false;
+            
+            string rpta = "<ul class='list-group'>"; //List with errors
+         
             if (!ModelState.IsValid)
             {
                 var query = (from state in ModelState.Values//Values
@@ -34,21 +44,104 @@ namespace Pico_y_Placa_predictor.Controllers
             }
             else
             {
-                if (!PlateCheck(oVehiculo.placa))
-                {
-                    rpta += "<li class='list-group-item'> Formato de placa: XXX-0000 </li>";
-                }
-                if (!DateCheck(oVehiculo.fecha))
-                {
-                    rpta += "<li class='list-group-item'> Formato de fecha: dd/mm/yyy </li>";
-                }
-                if (!HourCheck(oVehiculo.hora))
-                {
-                    rpta += "<li class='list-group-item'> Formato de hora: hh: mm </li>";
-                }
+                //Data asignation
+                plateValid = PlateCheck(oVehiculo.placa);
+                dateValid = DateCheck(oVehiculo.fecha);
+                hourValid = HourCheck(oVehiculo.hora);
+                DateTime dateValue; //Date in type Datetime if date exists
 
+                if (plateValid && dateValid && hourValid)
+                {
+                    //date exists and is valid
+                    if (DateTime.TryParse(oVehiculo.fecha, out dateValue))
+                    {
+                        oVehiculo.fecha = dateValue.DayOfWeek.ToString(); //Day of the week
+                        rpta += MobilityCheck(oVehiculo,dateValue); //Message with info about today´s circulation
+                    }
+                    else
+                    {
+                        rpta += "<li class='list-group-item'> El día ingresado es inexistente, prueba otra fecha </li>";
+                    }
+                }
+                else
+                {
+                    if (!plateValid) //Invalid plate format
+                    {
+                        rpta += "<li class='list-group-item'> Formato de placa: XXX-0000 </li>";
+                    }
+                    if (!dateValid) //Invalid Date format
+                    {
+                        rpta += "<li class='list-group-item'> Formato de fecha: dd/mm/yyy </li>";
+                    }
+                    if (!hourValid) //Invalid hour format
+                    {
+                        rpta += "<li class='list-group-item'> Formato de hora: hh: mm </li>";
+                    }
+                }
             }
             rpta += "</ul>";
+            return rpta; //Message with errors in format or information about mobility
+        }
+
+        /// <summary>
+        /// Methds to check about today's mobility once all of the Vehicule data is verified
+        /// </summary>
+        /// <param name="oVehiculo">Object type vehicule from view</param>
+        /// <param name="dateValue">Date in format dd/MM/yyyy</param>
+        /// <returns>Message of mobility permission</returns>
+        public string MobilityCheck(Vehiculo oVehiculo,DateTime dateValue)
+        {
+            string rpta="";
+            char lastDigit = oVehiculo.placa[oVehiculo.placa.Length - 1];//Laas digit of the plate
+
+            // Days to compare in English and in Spanish to be visualized
+            string day = dateValue.ToString("dddd",new CultureInfo("en-US"));
+            string dia = dateValue.ToString("dddd", new CultureInfo("es-ES"));
+
+            //Onject to compare between a time gap
+            TimeSpan hour;
+            TimeSpan.TryParse(oVehiculo.hora, out hour);
+
+
+            if (((hour >= new TimeSpan(07, 00, 00) && hour <= new TimeSpan(9, 30, 0))
+                || (hour >= new TimeSpan(16, 00, 00) && hour <= new TimeSpan(19, 30, 0)))
+                && (day != "Sunday" || day != "Saturday"))
+            {
+               if ((lastDigit.Equals('1') || lastDigit.Equals('2'))
+               && (day == "Monday"))
+                {
+                    rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
+                }
+               else if ((lastDigit.Equals('3') || lastDigit.Equals('4'))
+               && (day == "Tuesday"))
+                {
+                    rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
+                }
+                else if ((lastDigit.Equals('5') || lastDigit.Equals('6'))
+                && (day == "Thursday"))
+                {
+                    rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
+                }
+                else if ((lastDigit.Equals('7') || lastDigit.Equals('8'))
+                && (day == "Wednesday"))
+                {
+                    rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
+                }
+                else if ((lastDigit.Equals('9') || lastDigit.Equals('0'))
+                && (day == "Friday"))
+                {
+                    rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
+                }
+                else
+                {
+                    rpta = "<li class='list-group-item'> TIENE LIBRE MOVILIDAD PARA ESTA FECHA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " Y HORA " + hour.ToString(@"hh\:mm") + "</li>";
+                }
+            }               
+            else
+            {
+                rpta = "<li class='list-group-item'> TIENE LIBRE MOVILIDAD PARA ESTA FECHA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " Y HORA " + hour.ToString(@"hh\:mm") + "</li>";
+            }
+
             return rpta;
         }
 
