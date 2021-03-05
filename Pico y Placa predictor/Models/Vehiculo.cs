@@ -20,7 +20,7 @@ namespace Pico_y_Placa_predictor.Models
         [Display(Name = "Fecha")]
         public string fecha { get; set; }
         [Required]
-        [StringLength(5, ErrorMessage = "Longitud máxima de horra: 5 caracteres | Formato de hora: 24:00")]
+        [StringLength(5, ErrorMessage = "Longitud máxima de hora: 5 caracteres | Formato de hora: 24:00")]
         [Display(Name = "Hora")]
         public string hora { get; set; }
         public string mensaje { get; set; }
