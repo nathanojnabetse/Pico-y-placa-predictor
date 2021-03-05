@@ -20,28 +20,28 @@
 {
     <div class="row espacio">
         <div class="col-sm-5">
-            @Html.LabelFor(x => x.placa, new { @class = "pull-right" })
+            @Html.LabelFor(x => x.placa, new { @class = "pull-right mov" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.placa, new { @placeholder = "XXX-0000", @class = "form-control" })
+            @Html.TextBoxFor(x => x.placa, new { @placeholder = "XXX-0000", @class = "form-control", @maxlength = 8 })
             @Html.ValidationMessage("placa", new { @class = "text-danger" })
         </div>        
     </div>
     <div class="row espacio">        
         <div class="col-sm-5">
-            @Html.LabelFor(x => x.fecha, new {@class = "pull-right" })
+            @Html.LabelFor(x => x.fecha, new {@class = "pull-right mov" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.fecha, new { @placeholder = "dd/mm/yyy", @class = "form-control" })
+            @Html.TextBoxFor(x => x.fecha, new { @placeholder = "dd/mm/yyyy", @class = "form-control", @maxlength = 10 })
             @Html.ValidationMessage("fecha", new { @class = "text-danger" })
         </div>       
     </div>
     <div class="row espacio">       
         <div class="col-sm-5">
-            @Html.LabelFor(x => x.hora, new { @class = "pull-right" })
+            @Html.LabelFor(x => x.hora, new { @class = "pull-right mov" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.hora, new { @placeholder = "hh:mm", @class = "form-control" })
+            @Html.TextBoxFor(x => x.hora, new { @placeholder = "hh:mm", @class = "form-control", @maxlength = 5 })
             @Html.ValidationMessage("hora", new { @class = "text-danger" })
         </div>        
     </div>
