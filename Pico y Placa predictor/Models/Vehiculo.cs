@@ -16,7 +16,7 @@ namespace Pico_y_Placa_predictor.Models
         [Display(Name = "Placa")]
         public string placa { get; set; }
         [Required]
-        [StringLength(10, ErrorMessage = "Longitud máxima de fecha: 10 caracteres | Formato de fecha: dd/mm/yyy")]
+        [StringLength(10, ErrorMessage = "Longitud máxima de fecha: 10 caracteres | Formato de fecha: dd/mm/yyyy")]
         [Display(Name = "Fecha")]
         public string fecha { get; set; }
         [Required]
