@@ -55,7 +55,8 @@ namespace Pico_y_Placa_predictor.Controllers
                     //date exists and is valid
                     if (DateTime.TryParse(oVehiculo.fecha, out dateValue))
                     {
-                        oVehiculo.fecha = dateValue.DayOfWeek.ToString(); //Day of the week
+                        DateTime dateFinal = DateTime.Parse(oVehiculo.fecha, new CultureInfo("es-ES"));//Avoid problems on deploy due to formats
+                        oVehiculo.fecha = dateFinal.DayOfWeek.ToString(); //Day of the week
                         rpta += MobilityCheck(oVehiculo,dateValue); //Message with info about today´s circulation
                     }
                     else
