@@ -11,7 +11,7 @@ namespace Pico_y_Placa_predictor.Controllers
         // GET: Circulacion
         public ActionResult Index()
         {
-            return View();
+            return View("Index");
         }
     }
 }
