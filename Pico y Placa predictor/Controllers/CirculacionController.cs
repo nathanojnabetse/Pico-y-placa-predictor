@@ -16,6 +16,42 @@ namespace Pico_y_Placa_predictor.Controllers
             return View("Index");
         }
 
+        public string Comprobar(Vehiculo oVehiculo)
+        {
+            string rpta = "";
+            rpta += "<ul class='list-group'>"; //List with errors
+            if (!ModelState.IsValid)
+            {
+                var query = (from state in ModelState.Values//Values
+                             from error in state.Errors//Messages
+                             select error.ErrorMessage).ToList();
+                
+                foreach (var item in query)
+                {
+                    rpta += "<li class='list-group-item'>" + item + "</li>";
+                }
+                
+            }
+            else
+            {
+                if (!PlateCheck(oVehiculo.placa))
+                {
+                    rpta += "<li class='list-group-item'> Formato de placa: XXX-0000 </li>";
+                }
+                if (!DateCheck(oVehiculo.fecha))
+                {
+                    rpta += "<li class='list-group-item'> Formato de fecha: dd/mm/yyy </li>";
+                }
+                if (!HourCheck(oVehiculo.hora))
+                {
+                    rpta += "<li class='list-group-item'> Formato de hora: hh: mm </li>";
+                }
+
+            }
+            rpta += "</ul>";
+            return rpta;
+        }
+
         /// <summary>
         /// Checks for valid format string for vehicle plate        
         /// </summary>

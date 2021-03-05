@@ -12,7 +12,7 @@
 @using (Ajax.BeginForm("Comprobar", "Circulacion", null, new AjaxOptions
 {
     HttpMethod = "POST",
-    OnSuccess = "Resultado",
+    //OnSuccess = "Resultado",
     UpdateTargetId = "divMensaje"
 }))
 {
@@ -21,16 +21,16 @@
             @Html.LabelFor(x => x.placa, new { @class = "pull-right" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.placa, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.placa, new { @placeholder = "XXX-0000", @class = "form-control" })
             @Html.ValidationMessage("placa", new { @class = "text-danger" })
         </div>        
     </div>
     <div class="row espacio">        
         <div class="col-sm-5">
-            @Html.LabelFor(x => x.fecha, new { @class = "pull-right" })
+            @Html.LabelFor(x => x.fecha, new {@class = "pull-right" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.fecha, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.fecha, new { @placeholder = "dd/mm/yyy", @class = "form-control" })
             @Html.ValidationMessage("fecha", new { @class = "text-danger" })
         </div>       
     </div>
@@ -39,7 +39,7 @@
             @Html.LabelFor(x => x.hora, new { @class = "pull-right" })
         </div>
         <div class="col-sm-5">
-            @Html.TextBoxFor(x => x.hora, new { @class = "form-control" })
+            @Html.TextBoxFor(x => x.hora, new { @placeholder = "hh:mm", @class = "form-control" })
             @Html.ValidationMessage("hora", new { @class = "text-danger" })
         </div>        
     </div>
@@ -49,4 +49,4 @@
         </div>        
     </div>
 }
-<div id="divMensaje"> </div>
+<div id="divMensaje" class="centrar text-danger"> </div>
