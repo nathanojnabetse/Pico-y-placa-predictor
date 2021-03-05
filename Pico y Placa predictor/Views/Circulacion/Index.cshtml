@@ -1,7 +1,52 @@
-﻿
+﻿@using Pico_y_Placa_predictor.Models
+@model Vehiculo
+
+
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>¿Puedo circular hoy?</h2>
 
+@using (Ajax.BeginForm("Comprobar", "Circulacion", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Resultado",
+    UpdateTargetId = "divMensaje"
+}))
+{
+    <div class="row espacio">
+        <div class="col-sm-5">
+            @Html.LabelFor(x => x.placa, new { @class = "pull-right" })
+        </div>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.placa, new { @class = "form-control" })
+            @Html.ValidationMessage("placa", new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="row espacio">        
+        <div class="col-sm-5">
+            @Html.LabelFor(x => x.fecha, new { @class = "pull-right" })
+        </div>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.fecha, new { @class = "form-control" })
+            @Html.ValidationMessage("fecha", new { @class = "text-danger" })
+        </div>       
+    </div>
+    <div class="row espacio">       
+        <div class="col-sm-5">
+            @Html.LabelFor(x => x.hora, new { @class = "pull-right" })
+        </div>
+        <div class="col-sm-5">
+            @Html.TextBoxFor(x => x.hora, new { @class = "form-control" })
+            @Html.ValidationMessage("hora", new { @class = "text-danger" })
+        </div>        
+    </div>
+    <div class="espacio centrar">
+        <div class="espacio">
+            <button type="submit" class="btn btn-outline-primary rounded-pill">Consultar</button>
+        </div>        
+    </div>
+}
+<div id="divMensaje"> </div>

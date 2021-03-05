@@ -9,7 +9,7 @@ namespace Pico_y_Placa_predictor.Models
     /// <summary>
     /// Clase con los datos de circulación de un automovil
     /// </summary>
-    public class Automovil
+    public class Vehiculo
     {
         [Required]
         [StringLength(8, ErrorMessage = "Longitud máxima 8 caracteres | Formato de placa: XXX-0000")]
@@ -21,7 +21,7 @@ namespace Pico_y_Placa_predictor.Models
         public string fecha { get; set; }
         [Required]
         [StringLength(5, ErrorMessage = "Longitud máxima 5 caracteres | Formato de hora: 24:00")]
-        [Display(Name = "hora")]
+        [Display(Name = "Hora")]
         public string hora { get; set; }
         public string mensaje { get; set; }
     }

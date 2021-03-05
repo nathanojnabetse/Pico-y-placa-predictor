@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Pico_y_Placa_predictor.Models;
 
 namespace Pico_y_Placa_predictor.Controllers
 {
