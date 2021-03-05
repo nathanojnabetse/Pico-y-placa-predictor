@@ -16,3 +16,16 @@ textarea {
     max-width: 280px;
 }
 
+footer {
+    padding: 10px 10px 0px 10px;
+    background-color: lightgray;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.centrar {
+    margin: auto;
+    width: 50%;
+    padding: 1em;
+    text-align: center;
+}
