@@ -72,11 +72,11 @@ namespace Pico_y_Placa_predictor.Controllers
                     }
                     if (!dateValid) //Invalid Date format
                     {
-                        rpta += "<li class='list-group-item'> Formato de fecha: dd/mm/yyy </li>";
+                        rpta += "<li class='list-group-item'> Formato de fecha: dd/mm/yyyy </li>";
                     }
                     if (!hourValid) //Invalid hour format
                     {
-                        rpta += "<li class='list-group-item'> Formato de hora: hh: mm </li>";
+                        rpta += "<li class='list-group-item'> Formato de hora: hh:mm </li>";
                     }
                 }
             }
@@ -119,12 +119,12 @@ namespace Pico_y_Placa_predictor.Controllers
                     rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
                 }
                 else if ((lastDigit.Equals('5') || lastDigit.Equals('6'))
-                && (day == "Thursday"))
+                && (day == "Wednesday"))
                 {
                     rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
                 }
                 else if ((lastDigit.Equals('7') || lastDigit.Equals('8'))
-                && (day == "Wednesday"))
+                && (day == "Thursday"))
                 {
                     rpta = "<li class='list-group-item'> SU VEHÍCULO NO PUEDE CIRCULAR ESTE DÍA " + dia.ToUpper() + " " + dateValue.ToString("dd/MM/yyyy") + " (07:00-9:30am / 16:00-19:30) </li>";
                 }
